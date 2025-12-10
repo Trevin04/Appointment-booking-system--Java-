@@ -61,3 +61,40 @@ class Service {
         return id + " - " + name + " | Rs. " + price + " | " + durationMinutes + " mins";
     }
 }
+
+class Appointment {
+    private int id;
+    private Customer customer;
+    private Service service;
+    private LocalDateTime dateTime;
+
+    public Appointment(int id, Customer customer, Service service, LocalDateTime dateTime) {
+        this.id = id;
+        this.customer = customer;
+        this.service = service;
+        this.dateTime = dateTime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return "[" + id + "] " + dateTime.format(formatter) + " - " +
+                customer.getName() + " - " + service.getName();
+    }
+}
