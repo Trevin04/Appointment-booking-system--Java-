@@ -148,4 +148,50 @@ class AppointmentSystem {
         }
         return null;
     }
-    
+    // ----- SERVICE METHODS -----
+
+    public void addService(Scanner scanner) {
+        System.out.println("\n--- Add Service ---");
+        System.out.print("Enter service name (e.g., Cleaning, Haircut): ");
+        String name = scanner.nextLine().trim();
+
+        System.out.print("Enter price: ");
+        String priceStr = scanner.nextLine().trim();
+
+        System.out.print("Enter duration in minutes: ");
+        String durationStr = scanner.nextLine().trim();
+
+        if (name.isEmpty()) {
+            System.out.println("Service name cannot be empty.");
+            return;
+        }
+
+        try {
+            double price = Double.parseDouble(priceStr);
+            int duration = Integer.parseInt(durationStr);
+
+            Service s = new Service(nextServiceId++, name, price, duration);
+            services.add(s);
+            System.out.println("Service added: " + s);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid price or duration. Service not added.");
+        }
+    }
+
+public void listServices() {
+        System.out.println("\n--- Services ---");
+        if (services.isEmpty()) {
+            System.out.println("No services found.");
+            return;
+        }
+        for (Service s : services) {
+            System.out.println(s);
+        }
+    }
+
+    private Service findServiceById(int id) {
+        for (Service s : services) {
+            if (s.getId() == id) return s;
+        }
+        return null;
+    }
