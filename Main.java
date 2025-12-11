@@ -98,3 +98,54 @@ class Appointment {
                 customer.getName() + " - " + service.getName();
     }
 }
+
+class AppointmentSystem {
+    private List<Customer> customers = new ArrayList<>();
+    private List<Service> services = new ArrayList<>();
+    private List<Appointment> appointments = new ArrayList<>();
+
+    private int nextCustomerId = 1;
+    private int nextServiceId = 1;
+    private int nextAppointmentId = 1;
+
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    // ----- CUSTOMER METHODS -----
+
+    public void addCustomer(Scanner scanner) {
+        System.out.println("\n--- Add Customer ---");
+        System.out.print("Enter customer name: ");
+        String name = scanner.nextLine().trim();
+
+        System.out.print("Enter phone number: ");
+        String phone = scanner.nextLine().trim();
+
+        if (name.isEmpty()) {
+            System.out.println("Customer name cannot be empty.");
+            return;
+        }
+
+        Customer c = new Customer(nextCustomerId++, name, phone);
+        customers.add(c);
+        System.out.println("Customer added: " + c);
+    }
+
+    public void listCustomers() {
+        System.out.println("\n--- Customers ---");
+        if (customers.isEmpty()) {
+            System.out.println("No customers found.");
+            return;
+        }
+        for (Customer c : customers) {
+            System.out.println(c);
+        }
+    }
+
+    private Customer findCustomerById(int id) {
+        for (Customer c : customers) {
+            if (c.getId() == id) return c;
+        }
+        return null;
+    }
+    
