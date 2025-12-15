@@ -335,7 +335,7 @@ public void searchAppointmentsByDate(Scanner scanner) {
             System.out.println("No appointments found for this customer.");
         }
     }
-    
+
  // Helper to safely read an int from Scanner
     private int readInt(Scanner scanner) {
         while (true) {
@@ -347,4 +347,73 @@ public void searchAppointmentsByDate(Scanner scanner) {
             }
         }
     }
-} 
+}
+public class Main {
+
+    private static void printMenu() {
+        System.out.println("\n===== Appointment Booking System =====");
+        System.out.println("1. Add Customer");
+        System.out.println("2. Add Service");
+        System.out.println("3. Book Appointment");
+        System.out.println("4. View All Appointments");
+        System.out.println("5. Search Appointments by Date");
+        System.out.println("6. Search Appointments by Customer");
+        System.out.println("7. List Customers");
+        System.out.println("8. List Services");
+        System.out.println("0. Exit");
+        System.out.print("Choose an option: ");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        AppointmentSystem system = new AppointmentSystem();
+
+        boolean running = true;
+        while (running) {
+            printMenu();
+            String choiceStr = scanner.nextLine().trim();
+            int choice;
+            try {
+                choice = Integer.parseInt(choiceStr);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid menu option.");
+                continue;
+            }
+
+            switch (choice) {
+                case 1:
+                    system.addCustomer(scanner);
+                    break;
+                case 2:
+                    system.addService(scanner);
+                    break;
+                case 3:
+                    system.bookAppointment(scanner);
+                    break;
+                case 4:
+                    system.viewAllAppointments();
+                    break;
+                case 5:
+                    system.searchAppointmentsByDate(scanner);
+                    break;
+                case 6:
+                    system.searchAppointmentsByCustomer(scanner);
+                    break;
+                case 7:
+                    system.listCustomers();
+                    break;
+                case 8:
+                    system.listServices();
+                    break;
+                case 0:
+                    running = false;
+                    System.out.println("Exiting... Bye!");
+                    break;
+                default:
+                    System.out.println("Unknown option. Try again.");
+            }
+        }
+
+        scanner.close();
+    }
+}
