@@ -195,3 +195,156 @@ public void listServices() {
         }
         return null;
     }
+// ----- APPOINTMENT METHODS -----
+
+    public void bookAppointment(Scanner scanner) {
+        System.out.println("\n--- Book Appointment ---");
+
+        if (customers.isEmpty()) {
+            System.out.println("No customers available. Please add a customer first.");
+            return;
+        }
+        if (services.isEmpty()) {
+            System.out.println("No services available. Please add a service first.");
+            return;
+        }
+
+        // Choose customer
+        listCustomers();
+        System.out.print("Enter customer ID: ");
+        int customerId = readInt(scanner);
+        Customer customer = findCustomerById(customerId);
+        if (customer == null) {
+            System.out.println("Customer not found.");
+            return;
+        }
+
+        // Choose service
+        listServices();
+        System.out.print("Enter service ID: ");
+        int serviceId = readInt(scanner);
+        Service service = findServiceById(serviceId);
+        if (service == null) {
+            System.out.println("Service not found.");
+            return;
+        }
+
+        // Enter date
+        LocalDate date;
+        while (true) {
+            System.out.print("Enter date (yyyy-MM-dd): ");
+            String dateInput = scanner.nextLine().trim();
+            try {
+                date = LocalDate.parse(dateInput, dateFormatter);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Try again.");
+            }
+        }
+
+        // Enter time
+        LocalTime time;
+        while (true) {
+            System.out.print("Enter time (HH:mm): ");
+            String timeInput = scanner.nextLine().trim();
+            try {
+                time = LocalTime.parse(timeInput, timeFormatter);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid time format. Try again.");
+            }
+        }
+
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
+
+        // Simple clash check (same customer + same date & time)
+        for (Appointment a : appointments) {
+            if (a.getCustomer().getId() == customer.getId() &&
+                    a.getDateTime().equals(dateTime)) {
+                System.out.println("This customer already has an appointment at that time.");
+                return;
+            }
+        }
+
+        Appointment appt = new Appointment(nextAppointmentId++, customer, service, dateTime);
+        appointments.add(appt);
+        System.out.println("Appointment booked: " + appt);
+    }
+
+    public void viewAllAppointments() {
+        System.out.println("\n--- All Appointments ---");
+        if (appointments.isEmpty()) {
+            System.out.println("No appointments found.");
+            return;
+        }
+
+        List<Appointment> sorted = new ArrayList<>(appointments);
+        Collections.sort(sorted, Comparator.comparing(Appointment::getDateTime));
+
+        for (Appointment a : sorted) {
+            System.out.println(a);
+        }
+    }
+public void searchAppointmentsByDate(Scanner scanner) {
+        System.out.println("\n--- Search Appointments by Date ---");
+        LocalDate date;
+        while (true) {
+            System.out.print("Enter date (yyyy-MM-dd): ");
+            String input = scanner.nextLine().trim();
+            try {
+                date = LocalDate.parse(input, dateFormatter);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Try again.");
+            }
+        }
+
+        boolean found = false;
+        for (Appointment a : appointments) {
+            if (a.getDateTime().toLocalDate().equals(date)) {
+                if (!found) {
+                    System.out.println("Appointments on " + date + ":");
+                }
+                System.out.println(a);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No appointments found on this date.");
+        }
+    }
+
+    public void searchAppointmentsByCustomer(Scanner scanner) {
+        System.out.println("\n--- Search Appointments by Customer ---");
+        System.out.print("Enter customer name (full or part): ");
+        String query = scanner.nextLine().trim().toLowerCase();
+
+        boolean found = false;
+        for (Appointment a : appointments) {
+            if (a.getCustomer().getName().toLowerCase().contains(query)) {
+                if (!found) {
+                    System.out.println("Appointments for \"" + query + "\":");
+                }
+                System.out.println(a);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No appointments found for this customer.");
+        }
+    }
+    
+ // Helper to safely read an int from Scanner
+    private int readInt(Scanner scanner) {
+        while (true) {
+            String input = scanner.nextLine().trim();
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.print("Please enter a valid number: ");
+            }
+        }
+    }
+} 
