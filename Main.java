@@ -1,3 +1,14 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+
 class Customer {
     private int id;
     private String name;
@@ -148,6 +159,7 @@ class AppointmentSystem {
         }
         return null;
     }
+
     // ----- SERVICE METHODS -----
 
     public void addService(Scanner scanner) {
@@ -178,7 +190,7 @@ class AppointmentSystem {
         }
     }
 
-public void listServices() {
+    public void listServices() {
         System.out.println("\n--- Services ---");
         if (services.isEmpty()) {
             System.out.println("No services found.");
@@ -195,7 +207,8 @@ public void listServices() {
         }
         return null;
     }
-// ----- APPOINTMENT METHODS -----
+
+    // ----- APPOINTMENT METHODS -----
 
     public void bookAppointment(Scanner scanner) {
         System.out.println("\n--- Book Appointment ---");
@@ -285,7 +298,8 @@ public void listServices() {
             System.out.println(a);
         }
     }
-public void searchAppointmentsByDate(Scanner scanner) {
+
+    public void searchAppointmentsByDate(Scanner scanner) {
         System.out.println("\n--- Search Appointments by Date ---");
         LocalDate date;
         while (true) {
@@ -336,7 +350,7 @@ public void searchAppointmentsByDate(Scanner scanner) {
         }
     }
 
- // Helper to safely read an int from Scanner
+    // Helper to safely read an int from Scanner
     private int readInt(Scanner scanner) {
         while (true) {
             String input = scanner.nextLine().trim();
@@ -348,6 +362,7 @@ public void searchAppointmentsByDate(Scanner scanner) {
         }
     }
 }
+
 public class Main {
 
     private static void printMenu() {
